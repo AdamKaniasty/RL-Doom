@@ -1,4 +1,4 @@
-## Trackmania - Reinforcement Learning
+## Doom - Reinforcement Learning
 This Project is created as part of [research workshops course](https://github.com/PrzeChoj/2024Lato-WarsztatyBadawcze) included in Data Science Studies.
 This Project is going to be done by a team of 5 people.
 
