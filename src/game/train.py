@@ -11,7 +11,7 @@ def train(config_file):
     actions = game.get_available_buttons()
     available_variables = game.get_available_game_variables()
 
-    model = RandomActionModel(actions, available_variables, 'test')
+    model = RandomActionModel(actions, available_variables, 'train')
 
     episodes = 10
     for i in range(episodes):
@@ -21,7 +21,7 @@ def train(config_file):
             screen = game.get_state().screen_buffer
 
             variables = game.get_available_game_variables()
-            action = model.action(variables)
+            action = model.action(variables, True)
             game.make_action(action)
 
     game.close()
