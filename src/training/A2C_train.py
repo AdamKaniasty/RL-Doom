@@ -13,4 +13,4 @@ if __name__ == '__main__':
         mode='train'
     )
     model.train(5000)
-    model.save()
+    model.save('a2c_vizdoom.zip')
