@@ -11,6 +11,7 @@ from gymnasium.utils import EzPickle
 import vizdoom.vizdoom as vzd
 
 from src.game.env_init import game_init
+from src.rewards.reward_abstract import Reward
 
 LABEL_COLORS = (
     np.random.default_rng(42).uniform(25, 256, size=(256, 3)).astype(np.uint8)
@@ -63,13 +64,18 @@ class VizDOOM(gym.Env, EzPickle):
         # specify observation space(s)
         self.observation_space = self.__get_observation_space()
 
+        # reward class
+        self.reward_class = Reward()
+
         self.game.init()
 
     def step(self, action):
         if isinstance(action, vizdoom.vizdoom.Button):
             action = self.action_map[action]
         env_action = self.__build_env_action(action)
-        reward = self.game.make_action(env_action)
+        self.game.make_action(env_action)
+        game_state = self.game.get_state()
+        reward = self.reward_class.evaluate(game_state)
         self.state = self.game.get_state()
         terminated = self.game.is_episode_finished()
         truncated = False  # Truncation to be handled by the TimeLimit wrapper
