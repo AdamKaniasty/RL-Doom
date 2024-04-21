@@ -12,5 +12,6 @@ if __name__ == '__main__':
         CONFIG_PATH,
         mode='train'
     )
+    # 5K -> around 8:30 minutes
     model.train(5000)
     model.save('a2c_vizdoom.zip')

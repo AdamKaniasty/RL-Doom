@@ -9,10 +9,10 @@ class A2C_Model:
         self.env = gym.make('Vizdoom-v0', level=config_file, mode=mode)
         if pretrained:
             print("Loading pretrained model")
-            self.model = A2C.load(pretrained, self.env)
+            self.model = A2C.load(pretrained, self.env, tensorboard_log="./src/models/logs/a2c")
         else:
             print("Creating new model")
-            self.model = A2C("MultiInputPolicy", self.env, verbose=1)
+            self.model = A2C("MultiInputPolicy", self.env, verbose=1, tensorboard_log="./src/models/logs/a2c")
 
     def train(self, steps=1000):
         self.model.learn(total_timesteps=steps, progress_bar=True)
