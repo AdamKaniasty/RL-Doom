@@ -4,9 +4,9 @@ from src.metrics.sb3_metric_abstract import SB3_Metric_Callback
 import tensorflow as tf
 
 
-class SB3_Episode_Distance(SB3_Metric_Callback):
+class SB3_Episode_Steps(SB3_Metric_Callback):
     def __init__(self, verbose=0):
-        super(SB3_Episode_Distance, self).__init__(verbose, name="Episode Distance")
+        super(SB3_Episode_Steps, self).__init__(verbose, name="Episode Steps")
         self.step_counter = 0
         self.episode_counter = 0
 
@@ -23,16 +23,10 @@ class SB3_Episode_Distance(SB3_Metric_Callback):
         if game_state is None:
             return False
 
-        distance = self._compute_custom_metric(game_state)
-
         with self._logger.as_default():
-            tf.summary.scalar(self.name, distance, step=self.episode_counter)
+            tf.summary.scalar(self.name, self.step_counter, step=self.episode_counter)
             self._logger.flush()
         self.step_counter = 0
         self.episode_counter += 1
 
         return True
-
-    def _compute_custom_metric(self, game_state=None):
-        game_state = game_state.game_variables
-        return sqrt(game_state[3]**2 + game_state[4]**2 + game_state[5]**2)
