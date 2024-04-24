@@ -10,7 +10,6 @@ from src.models.stable_baselines3_A2C import A2C_Model
 CONFIG_PATH = os.path.join(vzd.scenarios_path, "deadly_corridor.cfg")
 
 # play(CONFIG_PATH, 35)
-# train(CONFIG_PATH)
 
 
 if __name__ == '__main__':
@@ -21,3 +20,4 @@ if __name__ == '__main__':
     )
 
     model.test()
+

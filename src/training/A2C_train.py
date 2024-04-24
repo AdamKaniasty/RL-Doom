@@ -13,5 +13,5 @@ if __name__ == '__main__':
         mode='train'
     )
     # 5K -> around 8:30 minutes
-    model.train(1)
-    model.save('a2c_vizdoom_15K.zip')
+    model.train(5000)
+    model.save('a2c_vizdoom_5K.zip')

@@ -5,14 +5,13 @@ import tensorflow as tf
 class SB3_Metric_Callback(BaseCallback):
     def __init__(self, verbose=0, name="SB3_Metric_Callback"):
         super(SB3_Metric_Callback, self).__init__(verbose)
-        self._logger = tf.summary.create_file_writer(logdir="./src/models/logs/custom_metrics")
+        self._logger = tf.summary.create_file_writer(logdir="./src/models/logs/a2c")
         self.name = name
 
     def _on_step(self) -> bool:
         game_state = self._get_game_state()
         if game_state is None:
             return False
-        print(game_state.game_variables)  # GLHF
         custom_metric = self._compute_custom_metric()
 
         with self._logger.as_default():

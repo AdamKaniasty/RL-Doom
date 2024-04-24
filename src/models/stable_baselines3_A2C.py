@@ -1,8 +1,7 @@
 import gymnasium as gym
 from stable_baselines3 import A2C
 
-from src.game.gymnasium_wrapper import VizDOOM
-from src.metrics.sb3_metric_abstract import SB3_Metric_Callback
+from src.metrics.episode_length import SB3_EpisodeLength_Callback
 
 
 class A2C_Model:
@@ -16,7 +15,7 @@ class A2C_Model:
             self.model = A2C("MultiInputPolicy", self.env, verbose=1, tensorboard_log="./src/models/logs/a2c")
 
     def train(self, steps=1000):
-        callback = SB3_Metric_Callback()
+        callback = SB3_EpisodeLength_Callback()
         self.model.learn(total_timesteps=steps, progress_bar=True, callback=callback)
 
     def save(self, path='a2c_vizdoom'):
