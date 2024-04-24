@@ -17,7 +17,7 @@ if __name__ == '__main__':
     model = A2C_Model(
         CONFIG_PATH,
         mode='test',
-        pretrained='./src/models/weights/a2c_vizdoom'
+        pretrained='./src/models/weights/a2c_vizdoom_15K'
     )
 
     model.test()
