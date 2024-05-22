@@ -12,6 +12,7 @@ import vizdoom.vizdoom as vzd
 
 from src.game.env_init import game_init
 from src.rewards.reward_abstract import AbstractReward
+from src.rewards.reward_survivaility import SurvivalReward
 
 LABEL_COLORS = (
     np.random.default_rng(42).uniform(25, 256, size=(256, 3)).astype(np.uint8)
@@ -65,7 +66,7 @@ class VizDOOM(gym.Env, EzPickle):
         self.observation_space = self.__get_observation_space()
 
         # reward class
-        self.reward_class = AbstractReward()
+        self.reward_class = SurvivalReward()
 
         self.game.init()
 

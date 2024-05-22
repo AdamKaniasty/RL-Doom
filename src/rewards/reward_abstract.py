@@ -1,6 +1,6 @@
 class AbstractReward:
     def __init__(self, health_reward=0.1, damage_penalty=-0.1, enemy_reward=1.0, goal_reward=10.0, ammo_penalty=-0.01,
-                 death_penalty=-10.0):
+                 death_penalty=0):
         # Define reward values
         self.health_reward = health_reward
         self.damage_penalty = damage_penalty
