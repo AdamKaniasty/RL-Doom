@@ -1,7 +1,6 @@
 from math import sqrt
 
 from src.metrics.sb3_metric_abstract import SB3_Metric_Callback
-import tensorflow as tf
 
 
 class SB3_Episode_Steps(SB3_Metric_Callback):
@@ -23,9 +22,9 @@ class SB3_Episode_Steps(SB3_Metric_Callback):
         if game_state is None:
             return False
 
-        with self._logger.as_default():
-            tf.summary.scalar(self.name, self.step_counter, step=self.episode_counter)
-            self._logger.flush()
+        self._logger.add_scalar(self.name, self.step_counter, self.episode_counter)
+        self._logger.flush()
+
         self.step_counter = 0
         self.episode_counter += 1
 

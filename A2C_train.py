@@ -6,8 +6,6 @@ from src.game.play import play
 from src.game.train import train
 from src.models.stable_baselines3_A2C import A2C_Model
 
-os.chdir("../..")
-
 # CONFIG_PATH = os.path.join(vzd.scenarios_path, "basic.cfg")
 CONFIG_PATH = os.path.join(vzd.scenarios_path, "deadly_corridor.cfg")
 

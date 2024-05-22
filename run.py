@@ -13,6 +13,11 @@ CONFIG_PATH = os.path.join(vzd.scenarios_path, "deadly_corridor.cfg")
 
 
 if __name__ == '__main__':
-    model = A2C_Model(CONFIG_PATH)
-    model.train(300)
-    model.save()
+    model = A2C_Model(
+        CONFIG_PATH,
+        mode='test',
+        pretrained='./src/models/weights/a2c_vizdoom_15K'
+    )
+
+    model.test()
+
