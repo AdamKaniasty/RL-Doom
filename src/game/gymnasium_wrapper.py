@@ -11,9 +11,15 @@ from gymnasium.utils import EzPickle
 import vizdoom.vizdoom as vzd
 
 from src.game.env_init import game_init
-from src.rewards.reward_abstract import Reward
+
+
 from src.rewards.reward_corridor import Reward_corridor
+from src.rewards.reward_abstract import AbstractReward
+from src.rewards.reward_survivaility import SurvivalReward
+
+
 from src.utils.screen_preprocess import screen_preprocess
+
 
 LABEL_COLORS = (
     np.random.default_rng(42).uniform(25, 256, size=(256, 3)).astype(np.uint8)
