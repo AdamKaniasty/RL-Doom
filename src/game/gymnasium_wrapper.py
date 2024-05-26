@@ -11,7 +11,11 @@ from gymnasium.utils import EzPickle
 import vizdoom.vizdoom as vzd
 
 from src.game.env_init import game_init
-from src.rewards.reward_abstract import Reward
+from src.rewards.reward_abstract import AbstractReward
+from src.rewards.reward_survivaility import SurvivalReward
+
+from src.utils.screen_preprocess import screen_preprocess
+
 
 LABEL_COLORS = (
     np.random.default_rng(42).uniform(25, 256, size=(256, 3)).astype(np.uint8)
@@ -24,13 +28,8 @@ class VizDOOM(gym.Env, EzPickle):
         "render_fps": vzd.DEFAULT_TICRATE,
     }
 
-    def __init__(
-            self,
-            level,
-            max_buttons_pressed=1,
-            mode='train',
-            render_mode: Optional[str] = None,
-    ):
+    def __init__(self, level, max_buttons_pressed=1, mode='train', render_mode: Optional[str] = None):
+        super().__init__()
         self.game = game_init(level, mode)
         self.state = None
         self.clock = None
@@ -65,7 +64,7 @@ class VizDOOM(gym.Env, EzPickle):
         self.observation_space = self.__get_observation_space()
 
         # reward class
-        self.reward_class = Reward()
+        self.reward_class = SurvivalReward()
 
         self.game.init()
 
@@ -74,14 +73,16 @@ class VizDOOM(gym.Env, EzPickle):
             action = self.action_map[action]
         env_action = self.__build_env_action(action)
         self.game.make_action(env_action)
-        game_state = self.game.get_state()
-        reward = self.reward_class.evaluate(game_state)
         self.state = self.game.get_state()
+        reward = self.reward_class.evaluate(self.state)
         terminated = self.game.is_episode_finished()
         truncated = False  # Truncation to be handled by the TimeLimit wrapper
         if self.render_mode == "human":
             self.render()
-        return self.__collect_observations(), reward, terminated, truncated, {}
+
+        screen = screen_preprocess(self.state.screen_buffer)
+        env_response = None  # TODO: stack screen response with self.state.game_variables, into one dimensional array
+        return env_response, reward, terminated, truncated, {}
 
     def __reindex_action_map(self):
         action_map = {}

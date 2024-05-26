@@ -7,8 +7,10 @@ def game_init(config_file_path, mode='train'):
     game.set_mode(vzd.Mode.PLAYER)
     game.set_screen_format(vzd.ScreenFormat.GRAY8)
     game.set_screen_resolution(vzd.ScreenResolution.RES_640X480)
+    game.set_doom_skill(1)
 
     # Adjust if needed
+    # Only health, position , killcount, damage_taken are relevant for corridor scenario
     game.set_available_game_variables([
         vzd.GameVariable.AMMO2,
         vzd.GameVariable.HEALTH,

@@ -1,7 +1,6 @@
 from math import sqrt
 
 from src.metrics.sb3_metric_abstract import SB3_Metric_Callback
-import tensorflow as tf
 
 
 class SB3_Episode_Distance(SB3_Metric_Callback):
@@ -25,9 +24,9 @@ class SB3_Episode_Distance(SB3_Metric_Callback):
 
         distance = self._compute_custom_metric(game_state)
 
-        with self._logger.as_default():
-            tf.summary.scalar(self.name, distance, step=self.episode_counter)
-            self._logger.flush()
+        self._logger.add_scalar(self.name, distance, self.episode_counter)
+        self._logger.flush()
+
         self.step_counter = 0
         self.episode_counter += 1
 
