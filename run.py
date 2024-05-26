@@ -13,10 +13,12 @@ CONFIG_PATH = os.path.join(vzd.scenarios_path, "deadly_corridor.cfg")
 
 
 if __name__ == '__main__':
+    # Loading and testing the pretrained model
+
     model = A2C_Model(
         CONFIG_PATH,
         mode='test',
-        pretrained='./src/models/weights/a2c_vizdoom_15K'
+        pretrained='./src/models/weights/a2c_corridor_10000.zip'
     )
 
     model.test()

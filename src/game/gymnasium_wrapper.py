@@ -12,6 +12,7 @@ import vizdoom.vizdoom as vzd
 
 from src.game.env_init import game_init
 from src.rewards.reward_abstract import Reward
+from src.rewards.reward_corridor import Reward_corridor
 from src.utils.screen_preprocess import screen_preprocess
 
 LABEL_COLORS = (
@@ -61,7 +62,7 @@ class VizDOOM(gym.Env, EzPickle):
         self.observation_space = self.__get_observation_space()
 
         # reward class
-        self.reward_class = Reward()
+        self.reward_class = Reward_corridor()
 
         self.game.init()
 
@@ -69,17 +70,31 @@ class VizDOOM(gym.Env, EzPickle):
         if isinstance(action, vizdoom.vizdoom.Button):
             action = self.action_map[action]
         env_action = self.__build_env_action(action)
-        self.game.make_action(env_action)
+        default_movement_reward = self.game.make_action(env_action)
         self.state = self.game.get_state()
         reward = self.reward_class.evaluate(self.state)
+
+        total_reward = default_movement_reward + reward
+
         terminated = self.game.is_episode_finished()
         truncated = False  # Truncation to be handled by the TimeLimit wrapper
         if self.render_mode == "human":
             self.render()
 
-        screen = screen_preprocess(self.state.screen_buffer)
+        if self.state:
+            screen = screen_preprocess(self.state.screen_buffer)
+        else:
+            # There is no state in the terminal step, so a zero observation is returned instead
+            screen = np.zeros((self.game.get_screen_height(), self.game.get_screen_width(), 1), dtype=np.uint8)
+
         env_response = None  # TODO: stack screen response with self.state.game_variables, into one dimensional array
-        return env_response, reward, terminated, truncated, {}
+
+        # Wypisz rzeczy które zwraca funkcja self.__collect_observations() ale tylko raz na 100 kroków
+        # if self.game.get_episode_time() % 100 == 0:
+        #     print(self.__collect_observations())
+
+        # return env_response, reward, terminated, truncated, {}
+        return self.__collect_observations(), total_reward, terminated, truncated, {}
 
     def __reindex_action_map(self):
         action_map = {}
@@ -136,6 +151,7 @@ class VizDOOM(gym.Env, EzPickle):
             observation["screen"] = self.state.screen_buffer
             if self.channels == 1:
                 observation["screen"] = self.state.screen_buffer[..., None]
+                # Co my tu tak naprawdę wstawiamy za obraz?
             if self.depth:
                 observation["depth"] = self.state.depth_buffer[..., None]
             if self.labels:

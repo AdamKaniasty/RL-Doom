@@ -2,12 +2,20 @@ import vizdoom as vzd
 
 
 def game_init(config_file_path, mode='train'):
+    """
+    Initialize the Vizdoom game with the given configuration file path (scenario) and mode.
+    Used in gymnasium_wrapper.py to create the environment.
+    """
+
+    print("Initializing game with config using: 'src/game/env_init.py' ")
+
     game = vzd.DoomGame()
     game.load_config(config_file_path)
     game.set_mode(vzd.Mode.PLAYER)
     game.set_screen_format(vzd.ScreenFormat.GRAY8)
-    game.set_screen_resolution(vzd.ScreenResolution.RES_640X480)
-    game.set_doom_skill(1)
+    game.set_screen_resolution(vzd.ScreenResolution.RES_640X480)  # TODO: Can be changed to 320x240
+
+    game.set_doom_skill(1)  # To powinno być zmienione w samym pliku cfg a nie tu
 
     # Adjust if needed
     # Only health, position , killcount, damage_taken are relevant for corridor scenario

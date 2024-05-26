@@ -6,6 +6,15 @@ from src.metrics.metric_episode_steps import SB3_Episode_Steps
 
 
 class A2C_Model:
+    """
+    Our own class to handle the A2C model from Stable Baselines 3. It allows to train, save and test the model.
+    It uses the environment registered as 'Vizdoom-v0' (registered in src/game/__init__.py) with the supplied config_path.
+    Most important parameters when initializing the class:
+    - config_file: path to the configuration file of the Vizdoom environment
+    - mode: 'train' or 'test'
+    - pretrained: path to the pretrained model if we want to test it
+    """
+
     def __init__(self, config_file, mode='train', pretrained=None):
         self.env = gym.make('Vizdoom-v0', level=config_file, mode=mode)
         if pretrained:
