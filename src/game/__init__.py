@@ -1,5 +1,4 @@
 import gymnasium as gym
-
 gym.envs.registration.register(
     id='Vizdoom-v0',
     entry_point='src.game.gymnasium_wrapper:VizDOOM',

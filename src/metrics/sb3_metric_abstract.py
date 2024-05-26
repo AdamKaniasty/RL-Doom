@@ -1,12 +1,13 @@
 from stable_baselines3.common.callbacks import BaseCallback
-import tensorflow as tf
+from torch.utils.tensorboard import SummaryWriter
 
 
 class SB3_Metric_Callback(BaseCallback):
     def __init__(self, verbose=0, name="SB3_Metric_Callback"):
         super(SB3_Metric_Callback, self).__init__(verbose)
-        self._logger = tf.summary.create_file_writer(logdir="./src/models/logs/a2c")
+        # self._logger = tf.summary.create_file_writer(logdir="./src/models/logs/a2c")
         self.name = name
+        self._logger = SummaryWriter(log_dir="./src/models/logs/a2c")
 
     def _on_step(self) -> bool:
         game_state = self._get_game_state()
@@ -14,9 +15,8 @@ class SB3_Metric_Callback(BaseCallback):
             return False
         custom_metric = self._compute_custom_metric()
 
-        with self._logger.as_default():
-            tf.summary.scalar(self.name, custom_metric, step=self.num_timesteps)
-            self._logger.flush()
+        self._logger.add_scalar(self.name, custom_metric, self.num_timesteps)
+        self._logger.flush()
 
         return True
 

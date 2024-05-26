@@ -24,8 +24,16 @@ class A2C_Model:
 
     def test(self):
         stable_env = self.model.get_env()
-        state = stable_env.reset()
-        terminated = False
-        while not terminated:
-            action, _ = self.model.predict(state)
-            state, _, terminated, _ = stable_env.step(action)
+        # state = stable_env.reset()
+        # terminated = False
+        # while not terminated:
+        #     action, _ = self.model.predict(state)
+        #     state, _, terminated, _ = stable_env.step(action)
+        #
+        # Now instead of only one episode, we can test multiple episodes
+        for _ in range(5):
+            state = stable_env.reset()
+            terminated = False
+            while not terminated:
+                action, _ = self.model.predict(state)
+                state, _, terminated, _ = stable_env.step(action)
