@@ -12,13 +12,9 @@ import vizdoom.vizdoom as vzd
 
 from src.game.env_init import game_init
 
-
 from src.rewards.reward_corridor import Reward_corridor
 from src.rewards.reward_abstract import AbstractReward
 from src.rewards.reward_survivaility import SurvivalReward
-
-
-from src.utils.screen_preprocess import screen_preprocess
 
 
 LABEL_COLORS = (
@@ -88,19 +84,23 @@ class VizDOOM(gym.Env, EzPickle):
             self.render()
 
         if self.state:
-            screen = screen_preprocess(self.state.screen_buffer)
+            screen = np.array(self.state.screen_buffer, dtype=np.uint8)
+            variables = np.array(self.state.game_variables, dtype=np.float32)
         else:
             # There is no state in the terminal step, so a zero observation is returned instead
             screen = np.zeros((self.game.get_screen_height(), self.game.get_screen_width(), 1), dtype=np.uint8)
+            variables = np.zeros(self.num_game_variables, dtype=np.float32)
 
-        env_response = None  # TODO: stack screen response with self.state.game_variables, into one dimensional array
-
+        observations = {
+            'screen': screen,
+            'gamevariables': variables
+        }
         # Wypisz rzeczy które zwraca funkcja self.__collect_observations() ale tylko raz na 100 kroków
         # if self.game.get_episode_time() % 100 == 0:
         #     print(self.__collect_observations())
 
         # return env_response, reward, terminated, truncated, {}
-        return self.__collect_observations(), total_reward, terminated, truncated, {}
+        return observations, total_reward, terminated, truncated, {}
 
     def __reindex_action_map(self):
         action_map = {}
