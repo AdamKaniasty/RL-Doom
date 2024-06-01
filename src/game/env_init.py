@@ -12,8 +12,7 @@ def game_init(config_file_path, mode='train'):
     game = vzd.DoomGame()
     game.load_config(config_file_path)
     game.set_mode(vzd.Mode.PLAYER)
-    game.set_screen_format(vzd.ScreenFormat.GRAY8)
-    game.set_screen_resolution(vzd.ScreenResolution.RES_640X480)  # TODO: Can be changed to 320x240
+    game.set_screen_resolution(vzd.ScreenResolution.RES_320X240)
 
     game.set_doom_skill(1)  # To powinno być zmienione w samym pliku cfg a nie tu
 

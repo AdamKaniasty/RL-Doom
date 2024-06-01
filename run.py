@@ -19,7 +19,8 @@ if __name__ == '__main__':
     model = CustomPPO_Model(
         CONFIG_PATH,
         mode='test',
-        pretrained='./src/training/src/models/weights/cPPO_vizdoom_8000'
+
+        pretrained='./src/training/src/models/weights/cPPO_vizdoom_50K'
     )
 
     model.test()
