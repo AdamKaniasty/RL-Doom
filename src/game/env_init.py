@@ -34,6 +34,7 @@ def game_init(config_file_path, mode='train'):
         vzd.GameVariable.SECRETCOUNT,
         vzd.GameVariable.HITCOUNT,
         vzd.GameVariable.DAMAGECOUNT,
+        vzd.GameVariable.DAMAGE_TAKEN,
     ])
 
     game.set_available_buttons([

@@ -2,6 +2,10 @@ from src.metrics.sb3_metric_abstract import SB3_Metric_Callback
 
 
 class SB3_EpisodeLength_Callback(SB3_Metric_Callback):
+    """
+    Witam. To jest śmieć. Nie zachęcam do używania.
+    """
+
     def __init__(self, verbose=0):
         super(SB3_EpisodeLength_Callback, self).__init__(verbose, name="Episode Length")
         self.step_counter = 0
@@ -11,6 +15,7 @@ class SB3_EpisodeLength_Callback(SB3_Metric_Callback):
         self.step_counter += 1
         if 'done' in self.locals and self.locals['done']:
             self.on_episode_end()
+            print("Metryka episode_length odnotowała koniec epizodu. Liczba kroków: ", self.step_counter)
 
         return True
 

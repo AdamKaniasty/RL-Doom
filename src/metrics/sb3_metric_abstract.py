@@ -7,7 +7,7 @@ class SB3_Metric_Callback(BaseCallback):
         super(SB3_Metric_Callback, self).__init__(verbose)
         # self._logger = tf.summary.create_file_writer(logdir="./src/models/logs/a2c")
         self.name = name
-        self._logger = SummaryWriter(log_dir="./src/models/logs/a2c")
+        self._logger = SummaryWriter(log_dir="./src/models/logs/ppo/custom_metrics")
 
     def _on_step(self) -> bool:
         game_state = self._get_game_state()
@@ -28,3 +28,16 @@ class SB3_Metric_Callback(BaseCallback):
         if hasattr(env, 'unwrapped') and hasattr(env.unwrapped, 'game'):
             return env.unwrapped.game.get_state()
         return None
+
+    def _get_doom_game(self):
+        env = self.training_env.envs[0]
+        if hasattr(env, 'unwrapped') and hasattr(env.unwrapped, 'game'):
+            return env.unwrapped.game
+
+        return None
+
+    def _get_game_variable(self, index):
+        game_state = self._get_game_state()
+        if game_state is None:
+            return None
+        return game_state.game_variables[index]

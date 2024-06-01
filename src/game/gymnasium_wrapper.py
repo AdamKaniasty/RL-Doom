@@ -65,6 +65,7 @@ class VizDOOM(gym.Env, EzPickle):
 
         # reward class
         self.reward_class = Reward_corridor()
+        self.current_reward = 0
 
         self.game.init()
 
@@ -73,10 +74,13 @@ class VizDOOM(gym.Env, EzPickle):
             action = self.action_map[action]
         env_action = self.__build_env_action(action)
         default_movement_reward = self.game.make_action(env_action)
+        # After checking, this default_reward works quite bad. I do not see registering dying penalty.
+
         self.state = self.game.get_state()
         reward = self.reward_class.evaluate(self.state)
 
         total_reward = default_movement_reward + reward
+        self.current_reward = total_reward
 
         terminated = self.game.is_episode_finished()
         truncated = False  # Truncation to be handled by the TimeLimit wrapper
@@ -148,6 +152,7 @@ class VizDOOM(gym.Env, EzPickle):
             self.game.set_seed(seed)
         self.game.new_episode()
         self.state = self.game.get_state()
+        self.current_reward = 0
 
         return self.__collect_observations(), {}
 

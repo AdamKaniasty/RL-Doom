@@ -12,8 +12,8 @@ import argparse
 CONFIG_PATH = os.path.join(vzd.scenarios_path, "deadly_corridor.cfg")
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Train the A2C model.')
-    parser.add_argument('--epochs', type=int, default=1000, help='Number of epochs to train the model')
+    parser = argparse.ArgumentParser(description='Train the Custom PPO model.')
+    parser.add_argument('--epochs', type=int, default=8000, help='Number of epochs to train the model')
 
     args = parser.parse_args()
 
@@ -21,6 +21,6 @@ if __name__ == '__main__':
         CONFIG_PATH,
         mode='train'
     )
-    # 5K -> around 8:30 minutes
-    model.train(50000)
-    model.save('cPPO_vizdoom_50K.zip')
+    # 3K -> around 50 seconds
+    model.train(args.epochs)
+    model.save('cPPO_vizdoom_{}.zip'.format(args.epochs))

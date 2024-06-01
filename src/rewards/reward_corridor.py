@@ -29,7 +29,7 @@ class Reward_corridor:
             self.health = variables[1]
             self.ammo = variables[0]
             self.hitcount = variables[12]
-            self.damage_taken = variables[13]
+            self.damage_taken = variables[14]
             # self.x = variables[3]
 
             self.first_run = False
@@ -37,7 +37,7 @@ class Reward_corridor:
 
         reward = 0.0
         # Calculate reward based on the change in game state
-        damage_taken_change = variables[13] - self.damage_taken
+        damage_taken_change = variables[14] - self.damage_taken
         ammo_change = variables[0] - self.ammo
         hitcount_change = variables[12] - self.hitcount
         # x_change = variables[3] - self.x
@@ -52,7 +52,7 @@ class Reward_corridor:
         self.health = variables[1]
         self.ammo = variables[0]
         self.hitcount = variables[12]
-        self.damage_taken = variables[13]
+        self.damage_taken = variables[14]
         # self.x = variables[3]
 
         # Return calculated reward

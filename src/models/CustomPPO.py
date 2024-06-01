@@ -5,8 +5,13 @@ from stable_baselines3.common.policies import ActorCriticPolicy
 from torch import nn
 import torch as th
 
+from src.metrics.metric_episode_ammo import SB3_Episode_Ammo
 from src.metrics.metric_episode_distance import SB3_Episode_Distance
+from src.metrics.metric_episode_health import SB3_Episode_Health
+from src.metrics.metric_episode_killcount import SB3_Episode_Killcount
+from src.metrics.metric_episode_return import SB3_Episode_Return
 from src.metrics.metric_episode_steps import SB3_Episode_Steps
+from src.metrics.metric_timestep_reward import SB3_Timestep_Reward
 from src.utils.screen_preprocess import PreprocessFrameAndGameVariables
 
 
@@ -83,10 +88,11 @@ class CustomPPO_Model:
             self.model = PPO.load(pretrained, self.env, tensorboard_log="./src/models/logs/ppo")
         else:
             print("Creating new model")
-            self.model = PPO(CustomPolicy, self.env, verbose=1, tensorboard_log="./src/models/logs/ppo")
+            self.model = PPO(CustomPolicy, self.env, n_steps=2048, verbose=1, tensorboard_log="./src/models/logs/ppo")
 
     def train(self, steps=1000):
-        callbacks = [SB3_Episode_Distance(), SB3_Episode_Steps()]
+        callbacks = [SB3_Episode_Distance(), SB3_Episode_Steps(), SB3_Episode_Killcount(), SB3_Episode_Ammo(),
+                     SB3_Episode_Health(), SB3_Episode_Return(), SB3_Timestep_Reward()]
         self.model.learn(total_timesteps=steps, progress_bar=True, callback=callbacks)
 
     def save(self, path):
