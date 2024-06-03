@@ -8,9 +8,9 @@ import gymnasium as gym
 class CNN_Block(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(CNN_Block, self).__init__()
-        self.conv_1 = nn.Conv2d(in_channels, 32, 8, 4, 0)
+        self.conv_1 = nn.Conv2d(in_channels, 64, 8, 4, 0)
         self.pool_1 = nn.MaxPool2d(2, 2)
-        self.conv_2 = nn.Conv2d(64, 64, 4, 2, 0)
+        self.conv_2 = nn.Conv2d(64, 32, 4, 2, 0)
         self.conv_3 = nn.Conv2d(32, out_channels, 4, 2, 0)
         self.relu = nn.ReLU()
         self.flatten = nn.Flatten()
