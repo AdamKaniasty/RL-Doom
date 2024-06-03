@@ -6,8 +6,9 @@ class SB3_Episode_Ammo(SB3_Metric_Callback):
     This custome metric measures the amount of ammo used by the agent in each episode.
     """
 
-    def __init__(self, verbose=0):
-        super(SB3_Episode_Ammo, self).__init__(verbose, name="Ammo Usage in each Episode")
+    def __init__(self, verbose=0, model='ppo', instance=0):
+        super(SB3_Episode_Ammo, self).__init__(verbose, name="Ammo Usage in each Episode", model=model,
+                                               instance=instance)
         self.step_counter = 0
         self.episode_counter = 1
         self.last_ammo = 52

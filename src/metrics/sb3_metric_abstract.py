@@ -1,13 +1,15 @@
+import os
+
 from stable_baselines3.common.callbacks import BaseCallback
 from torch.utils.tensorboard import SummaryWriter
 
 
 class SB3_Metric_Callback(BaseCallback):
-    def __init__(self, verbose=0, name="SB3_Metric_Callback"):
+    def __init__(self, verbose=0, name="SB3_Metric_Callback", model='ppo', instance=0):
         super(SB3_Metric_Callback, self).__init__(verbose)
         # self._logger = tf.summary.create_file_writer(logdir="./src/models/logs/a2c")
         self.name = name
-        self._logger = SummaryWriter(log_dir="./src/models/logs/ppo/custom_metrics")
+        self._logger = SummaryWriter(log_dir=f"../models/logs/{model}/custom_metrics/{instance}")
 
     def _on_step(self) -> bool:
         game_state = self._get_game_state()

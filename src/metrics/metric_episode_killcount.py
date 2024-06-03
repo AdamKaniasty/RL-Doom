@@ -9,9 +9,9 @@ class SB3_Episode_Killcount(SB3_Metric_Callback):
     The goal is to reach 6 kills per episode - the number of opponents in the corridor.
     """
 
-    def __init__(self, verbose=0):
+    def __init__(self, verbose=0, model='ppo', instance=0):
         # Agent starts with 0 kills
-        super(SB3_Episode_Killcount, self).__init__(verbose, name="Episode Killcount")
+        super(SB3_Episode_Killcount, self).__init__(verbose, name="Episode Killcount", model=model, instance=instance)
         self.step_counter = 0
         self.episode_counter = 1
         self.last_killcount = 0

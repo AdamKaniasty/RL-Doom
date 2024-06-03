@@ -28,6 +28,7 @@ class PreprocessFrameAndGameVariables(gym.ObservationWrapper):
     def _process_screen(self, screen):
         if len(screen.shape) == 4:
             screen = screen.squeeze()
+
         screen = np.transpose(screen, (1, 2, 0))
         screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
         screen = self._crop(screen, 30, 30)

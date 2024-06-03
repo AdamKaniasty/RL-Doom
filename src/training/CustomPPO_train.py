@@ -23,4 +23,4 @@ if __name__ == '__main__':
     )
     # 3K -> around 50 seconds
     model.train(args.epochs)
-    model.save('cPPO_vizdoom_{}.zip'.format(args.epochs))
+    model.save('cPPO_corridor_{}.zip'.format(args.epochs))

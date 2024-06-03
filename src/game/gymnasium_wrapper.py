@@ -18,7 +18,6 @@ from src.rewards.reward_survivaility import SurvivalReward
 from src.rewards.reward_main import Reward
 from src.rewards.reward_main_extended import ExtendedReward
 
-
 LABEL_COLORS = (
     np.random.default_rng(42).uniform(25, 256, size=(256, 3)).astype(np.uint8)
 )
@@ -94,7 +93,7 @@ class VizDOOM(gym.Env, EzPickle):
             variables = np.array(self.state.game_variables, dtype=np.float32)
         else:
             # There is no state in the terminal step, so a zero observation is returned instead
-            screen = np.zeros((self.game.get_screen_height(), self.game.get_screen_width(), 1), dtype=np.uint8)
+            screen = np.zeros((3, self.game.get_screen_height(), self.game.get_screen_width()), dtype=np.uint8)
             variables = np.zeros(self.num_game_variables, dtype=np.float32)
 
         observations = {

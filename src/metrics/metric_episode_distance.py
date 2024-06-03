@@ -9,9 +9,10 @@ class SB3_Episode_Distance(SB3_Metric_Callback):
     It measures it for each episode.
     """
 
-    def __init__(self, verbose=0):
+    def __init__(self, verbose=0, model='ppo', instance=0):
         # Agent starts at (0,0,0) in the 3D space
-        super(SB3_Episode_Distance, self).__init__(verbose, name="Distance from (0,0,0) in each episode")
+        super(SB3_Episode_Distance, self).__init__(verbose, name="Distance from (0,0,0) in each episode", model=model,
+                                                   instance=instance)
         self.step_counter = 0
         self.episode_counter = 1
         self.last_distance = 0

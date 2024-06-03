@@ -11,8 +11,8 @@ class SB3_Episode_Health(SB3_Metric_Callback):
      - Otherwise, when episode ends, the agent is assumed to be DEAD. Its health is set to 0.
     """
 
-    def __init__(self, verbose=0):
-        super(SB3_Episode_Health, self).__init__(verbose, name="Health at Episode End")
+    def __init__(self, verbose=0, model='ppo', instance=0):
+        super(SB3_Episode_Health, self).__init__(verbose, name="Health at Episode End", model=model, instance=instance)
         self.step_counter = 0
         self.episode_counter = 1
 
@@ -52,7 +52,7 @@ class SB3_Episode_Health(SB3_Metric_Callback):
             print("Agent is not dead. Position: ", self.prev_position)
             self.dead = False
             self.number_of_wins += 1
-        elif self.step_counter >= self.timeout_steps-1:
+        elif self.step_counter >= self.timeout_steps - 1:
             print("Agent is not dead. Timeout reached. Steps: ", self.step_counter)
             self.dead = False
         else:
@@ -79,12 +79,10 @@ class SB3_Episode_Health(SB3_Metric_Callback):
 
     def _on_training_end(self) -> None:
         # Add the number of deaths to the tensorboard as text
-        self._logger.add_text("Number of episodes in training", str(self.episode_counter-1), self.num_timesteps)
+        self._logger.add_text("Number of episodes in training", str(self.episode_counter - 1), self.num_timesteps)
         self._logger.add_text("Number of Deaths during training", str(self.number_of_deaths), self.num_timesteps)
         self._logger.add_text("Number of Wins during training", str(self.number_of_wins), self.num_timesteps)
 
         self._logger.flush()
 
         return None
-
-

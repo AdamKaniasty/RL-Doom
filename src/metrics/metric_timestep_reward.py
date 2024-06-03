@@ -9,8 +9,9 @@ class SB3_Timestep_Reward(SB3_Metric_Callback):
     The total return (episode_return) is reset to 0 at the beginning of each episode.
     """
 
-    def __init__(self):
-        super(SB3_Timestep_Reward, self).__init__(name="Timestep Reward from the beggining of Episode")
+    def __init__(self, model='ppo', instance=0):
+        super(SB3_Timestep_Reward, self).__init__(name="Timestep Reward from the beggining of Episode", model=model,
+                                                  instance=instance)
         # self.model.get_parameters().get('gamma')
         self.step_counter = 0
         self.episode_counter = 1

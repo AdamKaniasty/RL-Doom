@@ -1,7 +1,7 @@
 import os
 
 import gymnasium as gym
-from stable_baselines3 import PPO
+from stable_baselines3 import A2C
 
 from src.metrics.metric_episode_ammo import SB3_Episode_Ammo
 from src.metrics.metric_episode_distance import SB3_Episode_Distance
@@ -14,26 +14,26 @@ from src.models.nn_module import CustomPolicy
 from src.utils.screen_preprocess import PreprocessFrameAndGameVariables
 
 
-class CustomPPO_Model:
+class CustomA2C_Model:
     def __init__(self, config_file, mode='train', pretrained=None):
         self.env = gym.make('Vizdoom-v0', level=config_file, mode=mode)
         self.env = PreprocessFrameAndGameVariables(self.env)
         if pretrained:
             print("Loading pretrained model")
-            self.model = PPO.load(pretrained, self.env, tensorboard_log="./src/models/logs/ppo")
+            self.model = A2C.load(pretrained, self.env, tensorboard_log="./src/models/logs/a2c")
         else:
             print("Creating new model")
-            self.model = PPO(CustomPolicy, self.env, n_steps=2048, verbose=1, tensorboard_log="./src/models/logs/ppo")
+            self.model = A2C(CustomPolicy, self.env, n_steps=2048, verbose=1, tensorboard_log="./src/models/logs/a2c")
 
     def train(self, steps=1000):
-        instance = len(os.listdir(f"../models/logs/ppo/custom_metrics"))
-        callbacks = [SB3_Episode_Distance(model='ppo', instance=instance),
-                     SB3_Episode_Steps(model='ppo', instance=instance),
-                     SB3_Episode_Killcount(model='ppo', instance=instance),
-                     SB3_Episode_Ammo(model='ppo', instance=instance),
-                     SB3_Episode_Health(model='ppo', instance=instance),
-                     SB3_Episode_Return(model='ppo', instance=instance),
-                     SB3_Timestep_Reward(model='ppo', instance=instance)]
+        instance = len(os.listdir(f"../models/logs/a2c/custom_metrics"))
+        callbacks = [SB3_Episode_Distance(model='a2c', instance=instance),
+                     SB3_Episode_Steps(model='a2c', instance=instance),
+                     SB3_Episode_Killcount(model='a2c', instance=instance),
+                     SB3_Episode_Ammo(model='a2c', instance=instance),
+                     SB3_Episode_Health(model='a2c', instance=instance),
+                     SB3_Episode_Return(model='a2c', instance=instance),
+                     SB3_Timestep_Reward(model='a2c', instance=instance)]
         self.model.learn(total_timesteps=steps, progress_bar=True, callback=callbacks)
 
     def save(self, path):

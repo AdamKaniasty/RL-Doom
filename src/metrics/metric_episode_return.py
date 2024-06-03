@@ -7,8 +7,8 @@ class SB3_Episode_Return(SB3_Metric_Callback):
     The return is the discounted (by the factor gamma) sum of reward received by the agent.
     """
 
-    def __init__(self):
-        super(SB3_Episode_Return, self).__init__(name="Episode Return")
+    def __init__(self, model='ppo', instance=0):
+        super(SB3_Episode_Return, self).__init__(name="Episode Return", model=model, instance=instance)
         # self.model.get_parameters().get('gamma')
         self.step_counter = 0
         self.episode_counter = 1
@@ -42,7 +42,7 @@ class SB3_Episode_Return(SB3_Metric_Callback):
 
     def _on_episode_end(self) -> bool:
         self._logger.add_scalars(self.name, {'discounted': self.episode_return,
-                                            'undiscounted': self.episode_return_no_discount}, self.num_timesteps)
+                                             'undiscounted': self.episode_return_no_discount}, self.num_timesteps)
         self._logger.flush()
 
         self.step_counter = 0
