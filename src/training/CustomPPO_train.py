@@ -21,6 +21,14 @@ if __name__ == '__main__':
         CONFIG_PATH,
         mode='train'
     )
-    # 3K -> around 50 seconds
+
     model.train(args.epochs)
     model.save('cPPO_corridor_{}.zip'.format(args.epochs))
+
+    # model = CustomPPO_Model(
+    #     CONFIG_PATH,
+    #     mode='test',
+    #     pretrained='../models/weights/WEIGHTS_PPO_2_EXTENDED_100000x2'
+    # )
+    #
+    # model.test()
