@@ -26,7 +26,7 @@ class CustomPPO_Model:
             self.model = PPO(CustomPolicy, self.env, n_steps=2048, verbose=1, tensorboard_log="./src/models/logs/ppo")
 
     def train(self, steps=1000):
-        instance = len(os.listdir(f"../models/logs/ppo/custom_metrics"))
+        instance = len(os.listdir(f"../models/logs/ppo/custom_metrics")) + 1
         callbacks = [SB3_Episode_Distance(model='ppo', instance=instance),
                      SB3_Episode_Steps(model='ppo', instance=instance),
                      SB3_Episode_Killcount(model='ppo', instance=instance),

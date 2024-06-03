@@ -26,7 +26,7 @@ class CustomA2C_Model:
             self.model = A2C(CustomPolicy, self.env, n_steps=2048, verbose=1, tensorboard_log="./src/models/logs/a2c")
 
     def train(self, steps=1000):
-        instance = len(os.listdir(f"../models/logs/a2c/custom_metrics"))
+        instance = len(os.listdir(f"../models/logs/a2c/custom_metrics")) + 1
         callbacks = [SB3_Episode_Distance(model='a2c', instance=instance),
                      SB3_Episode_Steps(model='a2c', instance=instance),
                      SB3_Episode_Killcount(model='a2c', instance=instance),
