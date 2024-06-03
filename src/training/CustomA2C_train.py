@@ -18,5 +18,5 @@ if __name__ == '__main__':
         mode='train'
     )
     # 5K -> around 8:30 minutes
-    model.train(args.epochs)
-    model.save('a2c_vizdoom_50K.zip')
+    model.train(500_000)
+    model.save('WEIGHTS_A2C_1_EXTENDED_500K.ZIP')
