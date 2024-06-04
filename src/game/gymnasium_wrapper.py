@@ -19,6 +19,7 @@ from src.rewards.reward_main import Reward
 from src.rewards.reward_main_extended import ExtendedReward
 from src.rewards.reward_main_extended_plus import ExtendedPlusReward
 from src.rewards.reward_main_extended_supreme import ExtendedSupremeReward
+from src.rewards.reward_main_final import FinalReward
 
 LABEL_COLORS = (
     np.random.default_rng(42).uniform(25, 256, size=(256, 3)).astype(np.uint8)
@@ -31,7 +32,7 @@ class VizDOOM(gym.Env, EzPickle):
         "render_fps": vzd.DEFAULT_TICRATE,
     }
 
-    def __init__(self, level,  max_buttons_pressed=1, mode='train', reward_class=ExtendedPlusReward, render_mode: Optional[str] = None):
+    def __init__(self, level,  max_buttons_pressed=1, mode='train', reward_class=FinalReward, render_mode: Optional[str] = None):
         super().__init__()
         self.game = game_init(level, mode)
         self.state = None
