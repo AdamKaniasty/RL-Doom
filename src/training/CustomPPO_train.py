@@ -1,12 +1,8 @@
 import vizdoom as vzd
 import os
-from argparse import ArgumentParser
-from multiprocessing import Process
-from src.game.play import play
-from src.game.train import train
-from src.models.CustomPPO import CustomPPO_Model
-from src.models.stable_baselines3_A2C import A2C_Model
 import argparse
+
+from src.models.CustomPPO import CustomPPO_Model
 
 # CONFIG_PATH = os.path.join(vzd.scenarios_path, "basic.cfg")
 CONFIG_PATH = os.path.join(vzd.scenarios_path, "deadly_corridor.cfg")
@@ -16,14 +12,15 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', type=int, default=8000, help='Number of epochs to train the model')
 
     args = parser.parse_args()
-
+    iter = 2
     model = CustomPPO_Model(
         CONFIG_PATH,
-        mode='train'
-    )
+        mode='train',
+        pretrained=f'./src/models/weights/WEIGHTS_PPO_1_EXTENDEDPLUSREWARD_{iter}00000'
 
-    model.train(args.epochs)
-    model.save('cPPO_corridor_{}.zip'.format(args.epochs))
+    )
+    model.train(100000)
+    model.save(f'WEIGHTS_PPO_1_EXTENDEDPLUSREWARD_{iter + 1}00000')
 
     # model = CustomPPO_Model(
     #     CONFIG_PATH,

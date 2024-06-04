@@ -9,7 +9,7 @@ class SB3_Metric_Callback(BaseCallback):
         super(SB3_Metric_Callback, self).__init__(verbose)
         # self._logger = tf.summary.create_file_writer(logdir="./src/models/logs/a2c")
         self.name = name
-        self._logger = SummaryWriter(log_dir=f"../models/logs/{model}/custom_metrics/{instance}")
+        self._logger = SummaryWriter(log_dir=f"./src/models/logs/{model}/custom_metrics/{instance}")
 
     def _on_step(self) -> bool:
         game_state = self._get_game_state()

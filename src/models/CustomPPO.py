@@ -28,7 +28,7 @@ class CustomPPO_Model:
                              learning_rate=0.00001, n_steps=8192, clip_range=0.1, gamma=0.95, gae_lambda=0.9)
 
     def train(self, steps=1000):
-        instance = len(os.listdir(f"../models/logs/ppo/custom_metrics")) + 1
+        instance = len(os.listdir(f"./src/models/logs/ppo/custom_metrics")) + 1
         callbacks = [SB3_Episode_Distance(model='ppo', instance=instance),
                      SB3_Episode_Steps(model='ppo', instance=instance),
                      SB3_Episode_Killcount(model='ppo', instance=instance),
@@ -39,7 +39,7 @@ class CustomPPO_Model:
         self.model.learn(total_timesteps=steps, progress_bar=True, callback=callbacks)
 
     def save(self, path):
-        self.model.save("../models/weights/" + path)
+        self.model.save("./src/models/weights/" + path)
 
     def test(self):
         stable_env = self.model.get_env()
@@ -48,5 +48,5 @@ class CustomPPO_Model:
             state = stable_env.reset()
             terminated = False
             while not terminated:
-                action, _ = self.model.predict(state)
+                action, _ = self.model.predict(state, deterministic=True)
                 state, _, terminated, _ = stable_env.step(action)

@@ -26,10 +26,9 @@ class CNN_Block(nn.Module):
 class Linear_Block(nn.Module):
     def __init__(self, in_features, out_features):
         super(Linear_Block, self).__init__()
-        self.linear_1 = nn.Linear(in_features, 32)
-        self.linear_2 = nn.Linear(32, 64)
-        self.linear_3 = nn.Linear(64, 32)
-        self.linear_4 = nn.Linear(32, out_features)
+        self.linear_1 = nn.Linear(in_features, 512)
+        self.linear_2 = nn.Linear(512, 256)
+        self.linear_3 = nn.Linear(256, out_features)
         self.relu = nn.ReLU()
         self.iterations = 0
 
@@ -37,12 +36,7 @@ class Linear_Block(nn.Module):
         x = self.relu(self.linear_1(x))
         x = self.relu(self.linear_2(x))
         x = self.relu(self.linear_3(x))
-        x = self.relu(self.linear_4(x))
         return x
-
-    def forward_hook(self, module, inp, out):
-        # print(self.iterations)
-        self.iterations += 1
 
 
 class CustomNN(BaseFeaturesExtractor):
@@ -56,6 +50,14 @@ class CustomNN(BaseFeaturesExtractor):
             n_flatten = self.cnn(th.as_tensor(observation_space['screen'].sample()[None]).float()).shape[1]
 
         self.linear = Linear_Block(n_flatten + observation_space['gamevariables'].shape[0], features_dim)
+
+    #     self.cnn.register_forward_hook(self.forward_hook)
+
+    # def forward_hook(self, module, inp, out):
+    #     with open('cnn_output.txt', 'a') as f:
+    #         f.write(f'Iteration: {self.linear.iterations}\n')
+    #         f.write(f'Input shape: {inp[0].shape}\n')
+    #         f.write(f'Output shape: {out.shape}\n\n')
 
     def forward(self, observations: th.Tensor) -> th.Tensor:
         image_obs = observations['screen']
