@@ -20,10 +20,12 @@ class CustomA2C_Model:
         self.env = PreprocessFrameAndGameVariables(self.env)
         if pretrained:
             print("Loading pretrained model")
-            self.model = A2C.load(pretrained, self.env, tensorboard_log="../models/logs/a2c")
+            self.model = A2C.load(pretrained, self.env, tensorboard_log="../models/logs/a2c", learning_rate=0.00001,
+                                  n_steps=8192, clip_range=0.1, gamma=0.95, gae_lambda=0.9)
         else:
             print("Creating new model")
-            self.model = A2C(CustomPolicy, self.env, n_steps=2048, verbose=1, tensorboard_log="../models/logs/a2c")
+            self.model = A2C(CustomPolicy, self.env, verbose=1, tensorboard_log="../models/logs/a2c",
+                             learning_rate=0.00001, n_steps=8192, gamma=0.95, gae_lambda=0.9)
 
     def train(self, steps=1000):
         instance = len(os.listdir(f"../models/logs/a2c/custom_metrics")) + 1

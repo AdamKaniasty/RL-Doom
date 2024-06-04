@@ -20,10 +20,12 @@ class CustomPPO_Model:
         self.env = PreprocessFrameAndGameVariables(self.env)
         if pretrained:
             print("Loading pretrained model")
-            self.model = PPO.load(pretrained, self.env, tensorboard_log="./src/models/logs/ppo")
+            self.model = PPO.load(pretrained, self.env, tensorboard_log="./src/models/logs/ppo", learning_rate=0.00001,
+                                  n_steps=8192, clip_range=0.1, gamma=0.95, gae_lambda=0.9)
         else:
             print("Creating new model")
-            self.model = PPO(CustomPolicy, self.env, n_steps=2048, verbose=1, tensorboard_log="./src/models/logs/ppo")
+            self.model = PPO(CustomPolicy, self.env, verbose=1, tensorboard_log="./src/models/logs/ppo",
+                             learning_rate=0.00001, n_steps=8192, clip_range=0.1, gamma=0.95, gae_lambda=0.9)
 
     def train(self, steps=1000):
         instance = len(os.listdir(f"../models/logs/ppo/custom_metrics")) + 1
