@@ -32,7 +32,6 @@ class PreprocessFrameAndGameVariables(gym.ObservationWrapper):
         screen = np.transpose(screen, (1, 2, 0))
         screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
         screen = self._crop(screen, 30, 30)
-        screen = cv2.GaussianBlur(screen, (3, 3), 0)
         screen = cv2.equalizeHist(screen)
         screen = cv2.resize(screen, self.screen_shape, interpolation=cv2.INTER_AREA)
         screen = self._add_crosshair(screen, 6)
