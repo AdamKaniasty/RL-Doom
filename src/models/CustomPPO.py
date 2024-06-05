@@ -1,4 +1,5 @@
 import os
+import time
 
 import gymnasium as gym
 from stable_baselines3 import PPO
@@ -21,11 +22,14 @@ class CustomPPO_Model:
         if pretrained:
             print("Loading pretrained model")
             self.model = PPO.load(pretrained, self.env, tensorboard_log="./src/models/logs/ppo", learning_rate=0.00001,
-                                  n_steps=8192, clip_range=0.1, gamma=0.95, gae_lambda=0.9)
+                                  n_steps=8192, clip_range=0.1, gamma=0.95, gae_lambda=0.9, ent_coef=0.05)
         else:
             print("Creating new model")
-            self.model = PPO(CustomPolicy, self.env, verbose=1, tensorboard_log="./src/models/logs/ppo",
-                             learning_rate=0.00001, n_steps=8192, clip_range=0.1, gamma=0.95, gae_lambda=0.9)
+            self.model = PPO('CnnPolicy', self.env, verbose=1, tensorboard_log="./src/models/logs/ppo",
+                             learning_rate=0.00001, n_steps=8192, clip_range=0.1, gamma=0.95, gae_lambda=0.9,
+                             ent_coef=0.05)
+            # self.model = PPO('CnnPolicy', self.env, verbose=1, tensorboard_log="./src/models/logs/ppo",
+            #                  learning_rate=0.00001, n_steps=8192, clip_range=0.1, gamma=0.95, gae_lambda=0.9)
 
     def train(self, steps=1000):
         instance = len(os.listdir(f"./src/models/logs/ppo/custom_metrics")) + 1
@@ -50,3 +54,4 @@ class CustomPPO_Model:
             while not terminated:
                 action, _ = self.model.predict(state, deterministic=True)
                 state, _, terminated, _ = stable_env.step(action)
+                time.sleep(0.05)

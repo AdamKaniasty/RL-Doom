@@ -7,34 +7,28 @@ import matplotlib.pyplot as plt
 
 
 class PreprocessFrameAndGameVariables(gym.ObservationWrapper):
-    def __init__(self, env, screen_shape=(256, 144)):
+    def __init__(self, env, screen_shape=(256, 100)):
         super(PreprocessFrameAndGameVariables, self).__init__(env)
         self.screen_shape = screen_shape
-        self.observation_space = Dict({
-            'screen': Box(low=0, high=255, shape=(self.screen_shape[1], self.screen_shape[0], 2), dtype=np.uint8),
-            'gamevariables': env.observation_space['gamevariables']
-        })
+        self.observation_space = Box(low=0, high=255, shape=(self.screen_shape[1], self.screen_shape[0], 2),
+                                     dtype=np.uint8)
 
     def observation(self, obs):
         screen = obs['screen']
         processed_screen = self._process_screen(screen)
         edges = self._detect_edges(screen)
         combined_screen = np.concatenate((processed_screen, edges), axis=-1)
-        return {
-            'screen': combined_screen,
-            'gamevariables': obs['gamevariables']
-        }
+        return combined_screen
 
     def _process_screen(self, screen):
         if len(screen.shape) == 4:
             screen = screen.squeeze()
-
         screen = np.transpose(screen, (1, 2, 0))
         screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
-        screen = self._crop(screen, 30, 30)
+        screen = self._crop(screen, 60, 70)
         screen = cv2.equalizeHist(screen)
         screen = cv2.resize(screen, self.screen_shape, interpolation=cv2.INTER_AREA)
-        screen = self._add_crosshair(screen, 6)
+        # screen = self._add_crosshair(screen, 6)
         screen = np.expand_dims(screen, axis=-1)
         return screen
 
@@ -44,7 +38,7 @@ class PreprocessFrameAndGameVariables(gym.ObservationWrapper):
         screen = np.transpose(screen, (1, 2, 0))
         screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
         edges = cv2.Canny(screen, 80, 180)
-        edges = self._crop(edges, 30, 30)
+        edges = self._crop(edges, 60, 70)
         edges = cv2.resize(edges, self.screen_shape, interpolation=cv2.INTER_AREA)
         edges = np.expand_dims(edges, axis=-1)
         return edges

@@ -20,6 +20,7 @@ from src.rewards.reward_main_extended import ExtendedReward
 from src.rewards.reward_main_extended_plus import ExtendedPlusReward
 from src.rewards.reward_main_extended_supreme import ExtendedSupremeReward
 from src.rewards.reward_main_final import FinalReward
+from gymnasium.spaces import Box
 
 LABEL_COLORS = (
     np.random.default_rng(42).uniform(25, 256, size=(256, 3)).astype(np.uint8)
@@ -32,7 +33,8 @@ class VizDOOM(gym.Env, EzPickle):
         "render_fps": vzd.DEFAULT_TICRATE,
     }
 
-    def __init__(self, level,  max_buttons_pressed=1, mode='train', reward_class=FinalReward, render_mode: Optional[str] = None):
+    def __init__(self, level, max_buttons_pressed=1, mode='train', reward_class=FinalReward,
+                 render_mode: Optional[str] = None):
         super().__init__()
         self.game = game_init(level, mode)
         self.state = None
@@ -65,7 +67,8 @@ class VizDOOM(gym.Env, EzPickle):
         self.action_space = self.__get_action_space()
 
         # specify observation space(s)
-        self.observation_space = self.__get_observation_space()
+        self.observation_space = Box(low=0, high=255, shape=(256, 100, 2),
+                                     dtype=np.uint8)
 
         # reward class
         self.reward_class = reward_class()
@@ -77,7 +80,7 @@ class VizDOOM(gym.Env, EzPickle):
         if isinstance(action, vizdoom.vizdoom.Button):
             action = self.action_map[action]
         env_action = self.__build_env_action(action)
-        default_movement_reward = self.game.make_action(env_action)
+        default_movement_reward = self.game.make_action(env_action, 4)
         # After checking, this default_reward works quite bad. I do not see registering dying penalty.
 
         self.state = self.game.get_state()
@@ -91,30 +94,32 @@ class VizDOOM(gym.Env, EzPickle):
         if self.render_mode == "human":
             self.render()
 
+        return self.custom_collect_observations(), total_reward, terminated, truncated, {}
+
+    def custom_collect_observations(self):
         if self.state:
             screen = np.array(self.state.screen_buffer, dtype=np.uint8)
-            variables = np.array(self.state.game_variables, dtype=np.float32)
         else:
             # There is no state in the terminal step, so a zero observation is returned instead
             screen = np.zeros((3, self.game.get_screen_height(), self.game.get_screen_width()), dtype=np.uint8)
-            variables = np.zeros(self.num_game_variables, dtype=np.float32)
 
         observations = {
             'screen': screen,
-            'gamevariables': variables
+            # 'gamevariables': variables
         }
-        # Wypisz rzeczy które zwraca funkcja self.__collect_observations() ale tylko raz na 100 kroków
-        # if self.game.get_episode_time() % 100 == 0:
-        #     print(self.__collect_observations())
-
-        # return env_response, reward, terminated, truncated, {}
-        return observations, total_reward, terminated, truncated, {}
+        return observations
 
     def __reindex_action_map(self):
         action_map = {}
         for i, action in enumerate(self.actions):
             action_map[action] = i
         self.action_map = action_map
+
+    def set_mode_train(self):
+        self.game.set_window_visible(False)
+
+    def set_mode_test(self):
+        self.game.set_window_visible(True)
 
     def __parse_binary_buttons(self, env_action, agent_action):
         if self.num_binary_buttons != 0:
@@ -161,7 +166,7 @@ class VizDOOM(gym.Env, EzPickle):
         # reward_reset
         self.reward_class.reset()
 
-        return self.__collect_observations(), {}
+        return self.custom_collect_observations(), {}
 
     def __collect_observations(self):
         observation = {}
@@ -169,7 +174,6 @@ class VizDOOM(gym.Env, EzPickle):
             observation["screen"] = self.state.screen_buffer
             if self.channels == 1:
                 observation["screen"] = self.state.screen_buffer[..., None]
-                # Co my tu tak naprawdę wstawiamy za obraz?
             if self.depth:
                 observation["depth"] = self.state.depth_buffer[..., None]
             if self.labels:

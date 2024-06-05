@@ -1,5 +1,6 @@
 from src.rewards.reward_main import Reward
 
+
 class ExtendedReward(Reward):
     """
     Extended reward class created as main reward class used in the project. It inherits from the Reward class.
@@ -11,6 +12,7 @@ class ExtendedReward(Reward):
     - x_penalty: penalty for change in x position, it was created to balance default reward function which is added in
     gymnasium_wrapper.py to this reward function
     """
+
     def __init__(self, health_reward=1, damage_penalty=1, enemy_reward=150.0, ammo_penalty=1, x_penalty=0.3):
         super().__init__(health_reward, damage_penalty, enemy_reward, ammo_penalty)
         self.x_penalty = x_penalty
@@ -43,5 +45,3 @@ class ExtendedReward(Reward):
         self.prev_kills = game_state[2]
         self.prev_x = game_state[3]
         return reward
-
-

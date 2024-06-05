@@ -9,15 +9,15 @@ CONFIG_PATH = os.path.join(vzd.scenarios_path, "deadly_corridor.cfg")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Train the Custom PPO model.')
-    parser.add_argument('--epochs', type=int, default=100000, help='Number of epochs to train the model')
+    parser.add_argument('--epochs', type=int, default=8192, help='Number of epochs to train the model')
 
     args = parser.parse_args()
     iter = 0
-    model_name = 'WEIGHTS_PPO_5_FINALREWARD_600K'
+    model_name = 'WEIGHTS_PPO_2_FINALREWARD_' + str(args.epochs * iter)
     model = CustomPPO_Model(
-        config_file=CONFIG_PATH,
-        mode='test',
+        CONFIG_PATH,
+        mode='train',
         # pretrained='./src/models/weights/' + model_name
     )
     model.train(args.epochs)
-    model.save(f'WEIGHTS_PPO_5_FINALREWARD_100K')
+    # model.save(f'WEIGHTS_PPO_2_FINALREWARD_{args.epochs * (iter + 1)}')

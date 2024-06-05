@@ -19,7 +19,7 @@ if __name__ == '__main__':
     model = CustomPPO_Model(
         CONFIG_PATH,
         mode='test',
-        pretrained='./src/models/weights/WEIGHTS_PPO_1_EXTENDEDPLUSREWARD_100000'
+        pretrained='./src/models/weights/WEIGHTS_PPO_5_FINALREWARD_100K'
     )
 
     model.test()

@@ -1,5 +1,6 @@
 from src.rewards.reward_abstract import AbstractReward
 
+
 class Reward(AbstractReward):
     """
     Reward class created as main reward class used in the project. It inherits from the AbstractReward class.
@@ -9,11 +10,13 @@ class Reward(AbstractReward):
     - enemy_reward: reward for killing an enemy
     - ammo_penalty: penalty for change in ammo
     """
+
     def __init__(self, health_reward=1, damage_penalty=1, enemy_reward=150.0, ammo_penalty=1):
         """
         Penalties and rewards are defined as absolute values. Their sign will be changed in the evaluation
         process.
         """
+        super().__init__(health_reward, damage_penalty, enemy_reward, ammo_penalty)
         self.health_reward = health_reward
         self.damage_penalty = damage_penalty
         self.enemy_reward = enemy_reward
@@ -55,4 +58,3 @@ class Reward(AbstractReward):
         self.prev_health = 0
         self.prev_ammo = 0
         self.prev_kills = 0
-
