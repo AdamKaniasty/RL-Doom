@@ -54,20 +54,20 @@ class PreprocessFrameAndGameVariables(gym.ObservationWrapper):
 
 
 if __name__ == '__main__':
-    env = gym.make('Vizdoom-v0', level='deadly_corridor')
+    env = gym.make('Vizdoom-v0', level='basic')
     env = PreprocessFrameAndGameVariables(env)
     env.reset()
 
     frames = []
     for _ in range(3):
         state, reward, done, info, _ = env.step(env.action_space.sample())
-        print(f'Screen shape: {state["screen"].shape}')
-        print(f'Game variables: {state["gamevariables"]}')
+        print(f'Screen shape: {state.shape}')
+        # print(f'Game variables: {state["gamevariables"]}')
         print(f'Reward: {reward}')
         print(f'Done: {done}')
         print(f'Info: {info}')
         print()
-        frames.append(state['screen'])
+        frames.append(state)
 
     plt.figure(figsize=(15, 10))
     for i, frame in enumerate(frames):

@@ -13,11 +13,11 @@ def game_init(config_file_path, mode='train'):
     game.load_config(config_file_path)
     game.set_mode(vzd.Mode.PLAYER)
     game.set_screen_resolution(vzd.ScreenResolution.RES_320X240)
-    game.set_death_penalty(200)
+    game.set_death_penalty(5)
     game.set_render_crosshair(False)
     game.set_render_crosshair(True)
 
-    game.set_doom_skill(3)  # To powinno być zmienione w samym pliku cfg a nie tu
+    game.set_doom_skill(5)  # To powinno być zmienione w samym pliku cfg a nie tu
 
     # Adjust if needed
     # Only health, position , killcount, damage_taken are relevant for corridor scenario
@@ -40,11 +40,9 @@ def game_init(config_file_path, mode='train'):
     ])
 
     game.set_available_buttons([
-        vzd.Button.ATTACK,
-        vzd.MOVE_FORWARD,
-        vzd.MOVE_BACKWARD,
         vzd.TURN_LEFT,
         vzd.TURN_RIGHT,
+        vzd.Button.ATTACK,
     ])
 
     if mode == 'train':

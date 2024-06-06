@@ -48,10 +48,11 @@ class CustomPPO_Model:
     def test(self):
         stable_env = self.model.get_env()
         # Now instead of only one episode, we can test multiple episodes
-        for _ in range(5):
+        for _ in range(100):
             state = stable_env.reset()
             terminated = False
             while not terminated:
                 action, _ = self.model.predict(state, deterministic=True)
                 state, _, terminated, _ = stable_env.step(action)
-                time.sleep(0.05)
+                time.sleep(0.07)
+2
