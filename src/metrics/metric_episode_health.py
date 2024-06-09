@@ -56,7 +56,6 @@ class SB3_Episode_Health(SB3_Metric_Callback):
             print("Agent is not dead. Timeout reached. Steps: ", self.step_counter)
             self.dead = False
         else:
-            print("Agent is dead. Health: ", self.prev_health)
             self.prev_health = 0
             self.dead = True
             self.number_of_deaths += 1

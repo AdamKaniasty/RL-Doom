@@ -15,8 +15,8 @@ if __name__ == '__main__':
 
     model = CustomA2C_Model(
         CONFIG_PATH,
-        mode='train'
+        mode='test'
     )
     # 5K -> around 8:30 minutes
-    model.train(500_000)
-    model.save('WEIGHTS_A2C_1_EXTENDED_500K.ZIP')
+    model.train(100000)
+    model.save('WEIGHTS_A2C_1_FINAL_100K.ZIP')

@@ -13,8 +13,11 @@ def game_init(config_file_path, mode='train'):
     game.load_config(config_file_path)
     game.set_mode(vzd.Mode.PLAYER)
     game.set_screen_resolution(vzd.ScreenResolution.RES_320X240)
+    game.set_death_penalty(200)
+    game.set_render_crosshair(False)
+    game.set_render_crosshair(True)
 
-    game.set_doom_skill(1)  # To powinno być zmienione w samym pliku cfg a nie tu
+    game.set_doom_skill(3)  # To powinno być zmienione w samym pliku cfg a nie tu
 
     # Adjust if needed
     # Only health, position , killcount, damage_taken are relevant for corridor scenario
@@ -23,22 +26,20 @@ def game_init(config_file_path, mode='train'):
         vzd.GameVariable.HEALTH,
         vzd.GameVariable.KILLCOUNT,
         vzd.GameVariable.POSITION_X,
-        vzd.GameVariable.POSITION_Y,
-        vzd.GameVariable.POSITION_Z,
-        vzd.GameVariable.FRAGCOUNT,
-        vzd.GameVariable.ARMOR,
-        vzd.GameVariable.DEAD,
-        vzd.GameVariable.DEATHCOUNT,
-        vzd.GameVariable.ITEMCOUNT,
-        vzd.GameVariable.SECRETCOUNT,
-        vzd.GameVariable.HITCOUNT,
-        vzd.GameVariable.DAMAGECOUNT,
-        vzd.GameVariable.DAMAGE_TAKEN,
+        # vzd.GameVariable.POSITION_Y,
+        # vzd.GameVariable.POSITION_Z,
+        # vzd.GameVariable.FRAGCOUNT,
+        # vzd.GameVariable.ARMOR,
+        # vzd.GameVariable.DEAD,
+        # vzd.GameVariable.DEATHCOUNT,
+        # vzd.GameVariable.ITEMCOUNT,
+        # vzd.GameVariable.SECRETCOUNT,
+        # vzd.GameVariable.HITCOUNT,
+        # vzd.GameVariable.DAMAGECOUNT,
+        # vzd.GameVariable.DAMAGE_TAKEN,
     ])
 
     game.set_available_buttons([
-        vzd.Button.MOVE_LEFT,
-        vzd.Button.MOVE_RIGHT,
         vzd.Button.ATTACK,
         vzd.MOVE_FORWARD,
         vzd.MOVE_BACKWARD,
@@ -50,5 +51,4 @@ def game_init(config_file_path, mode='train'):
         game.set_window_visible(False)
     if mode == 'test':
         game.set_window_visible(True)
-    game.init()
     return game

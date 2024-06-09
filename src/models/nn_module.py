@@ -1,3 +1,6 @@
+import numpy as np
+from PIL import Image
+from matplotlib import pyplot as plt
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 from stable_baselines3.common.policies import ActorCriticPolicy
 from torch import nn
@@ -8,10 +11,10 @@ import gymnasium as gym
 class CNN_Block(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(CNN_Block, self).__init__()
-        self.conv_1 = nn.Conv2d(in_channels, 64, 8, 4, 0)
+        self.conv_1 = nn.Conv2d(in_channels, 32, 8, 4, 0)
         self.pool_1 = nn.MaxPool2d(2, 2)
-        self.conv_2 = nn.Conv2d(64, 32, 4, 2, 0)
-        self.conv_3 = nn.Conv2d(32, out_channels, 4, 2, 0)
+        self.conv_2 = nn.Conv2d(32, 16, 4, 2, 0)
+        self.conv_3 = nn.Conv2d(16, out_channels, 4, 2, 0)
         self.relu = nn.ReLU()
         self.flatten = nn.Flatten()
 
@@ -26,10 +29,9 @@ class CNN_Block(nn.Module):
 class Linear_Block(nn.Module):
     def __init__(self, in_features, out_features):
         super(Linear_Block, self).__init__()
-        self.linear_1 = nn.Linear(in_features, 32)
-        self.linear_2 = nn.Linear(32, 64)
-        self.linear_3 = nn.Linear(64, 32)
-        self.linear_4 = nn.Linear(32, out_features)
+        self.linear_1 = nn.Linear(in_features, 256)
+        self.linear_2 = nn.Linear(256, 64)
+        self.linear_3 = nn.Linear(64, out_features)
         self.relu = nn.ReLU()
         self.iterations = 0
 
@@ -37,12 +39,7 @@ class Linear_Block(nn.Module):
         x = self.relu(self.linear_1(x))
         x = self.relu(self.linear_2(x))
         x = self.relu(self.linear_3(x))
-        x = self.relu(self.linear_4(x))
         return x
-
-    def forward_hook(self, module, inp, out):
-        # print(self.iterations)
-        self.iterations += 1
 
 
 class CustomNN(BaseFeaturesExtractor):
@@ -50,7 +47,7 @@ class CustomNN(BaseFeaturesExtractor):
         super(CustomNN, self).__init__(observation_space, features_dim)
         n_input_channels = observation_space['screen'].shape[0]
 
-        self.cnn = CNN_Block(n_input_channels, 5)
+        self.cnn = CNN_Block(n_input_channels, 4)
 
         with th.no_grad():
             n_flatten = self.cnn(th.as_tensor(observation_space['screen'].sample()[None]).float()).shape[1]
