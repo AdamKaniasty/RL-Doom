@@ -16,7 +16,7 @@ This project aims to implement and evaluate reinforcement learning models to com
 
 ### Branches
 - **master-cnn-defend**: Contains models and code for the Basic and Defend Center scenarios.
-- **master-cnn**: Contains models and code for the Death Corridor scenario.
+- **master**: Contains models and code for the Death Corridor scenario.
 
 ### File Structure
 - `src/game`: Doom integrations
