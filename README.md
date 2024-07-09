@@ -10,7 +10,7 @@ This Project is going to be done by a team of 5 people.
 - [Krzysztof Sawicki](https://github.com/SawickiK)
 
 ## Objectives
-This project aims to implement and evaluate reinforcement learning models to complete scenarios in the VizDoom environment. The training process utilized two machine learning methods: Proximal Policy Optimization (PPO) and Advantage Actor-Critic (A2C). The models were trained to maximize performance by interacting with the environment and receiving rewards for actions taken.
+This project aims to implement and evaluate reinforcement learning models to complete scenarios in the VizDoom environment. The training process utilized two machine learning methods: Proximal Policy Optimization (**PPO**) and Advantage Actor-Critic (**A2C**). The models were trained to maximize performance by interacting with the environment and receiving rewards for actions taken.
 
 ## Repository Structure
 
@@ -19,11 +19,12 @@ This project aims to implement and evaluate reinforcement learning models to com
 - **master**: Contains models and code for the Death Corridor scenario.
 
 ### File Structure
-- `src/game`: Doom integrations
-- `metrics/`: Metrics implementations for TensorBoard
-- `models/`: Custom models implementations.
-- `rewards/`: Policies implementations
-- `training/`: Training scripts
+- `src/game`: VizDoom and Gymnasium integrations
+- `src/metrics/`: Metrics implementations for TensorBoard
+- `src/models/`: Custom models implementations
+- `src/rewards/`: Custom environment rewards
+- `src/training/`: Training scripts
+- `src/utils`: Utilities such as image preprocessing
 
 ## Description
 
@@ -50,10 +51,10 @@ The training involved:
 - Preprocessing game state data, including image processing with CNNs.
 - Evaluating the performance using various metrics such as ammo usage, episode length, kill count, and reward.
 
-### Results and Conclusions
+## Results and Conclusions
 - PPO outperformed A2C, showing better stability and efficiency in training.
 - Training solely on images using CNNs was more effective than including scalar game state data.
 - Metrics indicated significant improvement in agent performance over time.
 
-### Future Development
+## Future Development
 Future improvements could focus on exploring more scenarios, optimizing reward function parameters, and potentially automating the tuning process using methods like grid search. A comparison of agent performance against human players could also provide valuable insights.
