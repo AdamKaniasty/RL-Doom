@@ -195,5 +195,11 @@ cython_debug/
 docker/
 .DS_Store
 
-# Unused file
+# Unused files
 src/game/easy_wrapper.py
+A2C_train_sagemaker.py
+src/game/play.py
+src/game/train.py
+
+
+
