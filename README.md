@@ -25,6 +25,8 @@ This project aims to implement and evaluate reinforcement learning models to com
 - `src/rewards/`: Custom environment rewards
 - `src/training/`: Training scripts
 - `src/utils`: Utilities such as image preprocessing
+- `reports/`: Full report from the project
+- `run.py`: Model testing script
 
 ## Description
 
